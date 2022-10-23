@@ -55,7 +55,7 @@ spec:
     spec:
       containers:
       - name: kubenews
-        image: "bioneoficial/kube-news:{{TAG}}"
+        image: "bioneoficial/kube-news:v1"
         env:
           - name: DB_DATABASE
             value: "kubenews"
