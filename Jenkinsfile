@@ -1,32 +1,34 @@
+
+
  pipeline{
 	agent any
 	stages {
 		stage ('Build Docker Image'){
 			steps {
 			script {
-					dockerapp = docker.build("bioneoficial/kube-news:latest", '-f ./src/Dockerfile ./src')
-					//dockerapp = docker.build("bioneoficial/kube-news:${env.BUILD_ID}", '-f ./src/Dockerfile ./src')
+					dockerapp = docker.build("fidelisfelipe/kube-news:${env.BUILD_ID}", '-f ./src/Dockerfile ./src')
 				}
 			}
 		}
+		
 		stage ('Push Docker Image'){
 			steps {
 				script {
 						docker.withRegistry('https://registry.hub.docker.com', 'dockerhub'){
 							dockerapp.push('latest')
-							//dockerapp.push("${env.BUILD_ID}")
+							dockerapp.push("${env.BUILD_ID}")
 						}
 					}
 			}
 		}
 		stage ('Deploy Docker Image'){
-			// environment{
-			// 	tag_version = "${env.BUILD_ID}"
-			// }
+			environment{
+				tag_version = "${env.BUILD_ID}"
+			}
 			steps {
-				withKubeConfig(credentialsId: 'kube_config'){
-					//sh 'sed -i "s/{{TAG}}/$tag_version/g" ./deployment.yaml'
-					sh 'kubectl apply -f ./deployment.yaml'
+				withKubeConfig(credentialsId: 'kubeconfig'){
+					sh 'sed -i "s/{{TAG}}/$tag_version/g" ./k8s/deployment.yaml'
+					sh 'kubectl apply -f ./k8s/deployment.yaml'
 				}
 			}
 		}
