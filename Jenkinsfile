@@ -28,7 +28,8 @@
 			//}
 			steps {
 				script {
-					withKubeConfig(credentialsId: 'kubeconfig'){
+					//withKubeConfig(credentialsId: 'kubeconfig'){
+					withKubeConfig([credentialsId: 'kubeconfig', serverUrl: 'https://40c34367-a3eb-4096-823b-9dc3ccf5fd29.k8s.ondigitalocean.com']){
 						sh 'kubectl get pods'
 						//sh("kubectl --kubeconfig $MY_KUBECONFIG get pods")
 						//sh 'sed -i "s/{{TAG}}/$tag_version/g" ./k8s/deployment.yaml'
