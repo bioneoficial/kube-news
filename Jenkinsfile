@@ -24,7 +24,7 @@
 		stage ('Deploy Docker Image'){
 			environment{
 				tag_version = "${env.BUILD_ID}"
-        		MY_KUBECONFIG = credentials('my-kubeconfig')
+        		MY_KUBECONFIG = credentials('kubeconfig')
 			}
 			steps {
 				sh("kubectl --kubeconfig $MY_KUBECONFIG get pods")
