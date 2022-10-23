@@ -26,13 +26,13 @@
 				tag_version = "${env.BUILD_ID}"
         		MY_KUBECONFIG = credentials('my-kubeconfig')
 			}
-            steps {
-                sh("kubectl --kubeconfig $MY_KUBECONFIG get pods")
-            }
 			steps {
-				withKubeConfig(credentialsId: 'kubeconfig'){
-					sh 'sed -i "s/{{TAG}}/$tag_version/g" ./k8s/deployment.yaml'
-					sh 'kubectl apply -f ./k8s/deployment.yaml'
+				sh("kubectl --kubeconfig $MY_KUBECONFIG get pods")
+				script {
+					withKubeConfig(credentialsId: 'kubeconfig'){
+						sh 'sed -i "s/{{TAG}}/$tag_version/g" ./k8s/deployment.yaml'
+						sh 'kubectl apply -f ./k8s/deployment.yaml'
+					}
 				}
 			}
 		}
