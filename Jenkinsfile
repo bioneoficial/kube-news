@@ -24,10 +24,10 @@
 		stage ('Deploy Docker Image'){
 			environment{
 				tag_version = "${env.BUILD_ID}"
-        		MY_KUBECONFIG = credentials('kubeconfig')
+        		//MY_KUBECONFIG = credentials('kubeconfig')
 			}
 			steps {
-				sh("kubectl --kubeconfig $MY_KUBECONFIG get pods")
+				//sh("kubectl --kubeconfig $MY_KUBECONFIG get pods")
 				script {
 					withKubeConfig(credentialsId: 'kubeconfig'){
 						sh 'sed -i "s/{{TAG}}/$tag_version/g" ./k8s/deployment.yaml'
